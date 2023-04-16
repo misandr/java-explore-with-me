@@ -1,9 +1,14 @@
 version: '3.1'
 services:
 
-#  ewm-service:
-#    ports:
-#      - "8080:8080"
+  ewm-service:
+    build: ./ewm
+    image:
+      image_ewm
+    container_name:
+      container_ewm
+    ports:
+      - "8080:8080"
 #
 #  ewm-db:
 #    image: postgres:14-alpine

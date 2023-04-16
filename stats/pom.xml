@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>stats</artifactId>
+
     <packaging>pom</packaging>
     <modules>
         <module>dto</module>
@@ -17,11 +18,7 @@
         <module>service</module>
     </modules>
 
-
     <dependencies>
-
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
