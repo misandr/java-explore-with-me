@@ -1,7 +1,4 @@
 FROM amazoncorretto:11
-COPY client/target/*.jar clients-app.jar
-COPY service/target/*.jar service-app.jar
-COPY app.sh app.sh
-
-ENTRYPOINT ["/app.sh"]
+COPY service/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
 #ENV TZ="Europe/Moscow"

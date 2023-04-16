@@ -30,7 +30,7 @@ public class StatsController {
     public Set<VisitDto> getStats(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                   @RequestParam(defaultValue = "") List<String> uris,
-                                  @RequestParam Boolean unique) {
+                                  @RequestParam(defaultValue = "false") Boolean unique) {
         log.info("Get stats: start {}, end {}, uris {}, unique {}, ", start, end, uris, unique);
         return statsService.getStats(start, end, uris, unique);
     }
