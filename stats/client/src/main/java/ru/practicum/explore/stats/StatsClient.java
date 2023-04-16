@@ -35,7 +35,7 @@ public class StatsClient extends BaseClient {
                 + "&end=" + end
                 + "&unique=" + unique);
 
-        for(String uri: uris){
+        for (String uri : uris) {
             requestString.append("&uris=").append(uri);
         }
 
