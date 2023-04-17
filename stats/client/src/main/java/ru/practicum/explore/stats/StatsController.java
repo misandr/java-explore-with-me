@@ -19,10 +19,10 @@ public class StatsController {
 
     @PostMapping(path = "/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> hit(@RequestBody HitDto hitDto) {
+    public ResponseEntity<Object> addHit(@RequestBody HitDto hitDto) {
         log.info("Add hit: app {}, uri {}, ip {}, timestamp {}",
                 hitDto.getApp(), hitDto.getUri(), hitDto.getIp(), hitDto.getTimestamp());
-        return statsClient.hit(hitDto);
+        return statsClient.addHit(hitDto);
     }
 
     @GetMapping(path = "/stats")

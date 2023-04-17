@@ -25,7 +25,7 @@ public class StatsClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> hit(HitDto hitDto) {
+    public ResponseEntity<Object> addHit(HitDto hitDto) {
         return post("/hit", hitDto);
     }
 

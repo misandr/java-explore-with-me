@@ -15,14 +15,14 @@ public class StatsService {
 
     private final HitRepository hitRepository;
 
-    public void hit(HitDto hitDto) {
+    public void addHit(HitDto hitDto) {
 
         Hit hit = hitRepository.save(HitMapper.toHit(hitDto));
 
         HitMapper.toHitDto(hit);
     }
 
-    public Set<VisitDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
+    public Set<VisitDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique, int limit) {
 
         List<Hit> hits;
 
@@ -32,6 +32,7 @@ public class StatsService {
             hits = hitRepository.findByTimestampIsAfterAndTimestampIsBeforeAndUriIn(start, end, uris);
         }
 
+        int count = 0;
         List<VisitDto> visits = new ArrayList<>();
 
         for (Hit hit : hits) {
@@ -51,6 +52,11 @@ public class StatsService {
                 visitDto.setHits(1);
 
                 visits.add(visitDto);
+
+                count++;
+                if (count == limit) {
+                    break;
+                }
             } else {
                 if (!unique) {
                     gotVisitDto.setHits(gotVisitDto.getHits() + 1);
