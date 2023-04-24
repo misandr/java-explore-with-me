@@ -5,32 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "hits", schema = "public")
-public class Hit {
+@Table(name = "apps", schema = "public")
+public class App {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "app_id")
-    private App app;
-
-    private String uri;
-    private String ip;
-    @Column(name = "created_date")
-    private LocalDateTime timestamp;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Hit)) return false;
-        return id != null && id.equals(((Hit) o).getId());
+        if (!(o instanceof App)) return false;
+        return id != null && id.equals(((App) o).getId());
     }
 
     @Override
