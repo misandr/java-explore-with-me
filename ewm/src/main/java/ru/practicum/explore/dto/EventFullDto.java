@@ -1,7 +1,9 @@
 package ru.practicum.explore.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.explore.Constants;
 import ru.practicum.explore.enums.State;
 import ru.practicum.explore.model.Location;
 
@@ -25,8 +27,11 @@ public class EventFullDto {
     private CategoryDto category;
     private UserShortDto initiator;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime createdOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime eventDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime publishedOn;
 
     private Location location;

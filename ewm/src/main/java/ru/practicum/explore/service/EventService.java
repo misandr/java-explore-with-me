@@ -38,6 +38,25 @@ public class EventService {
     private final RequestRepository requestRepository;
 
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
+        if (newEventDto.getTitle() == null) {
+            log.warn("Event didn't save!");
+            throw new ValidationException("Event didn't save!");
+        }
+
+        if (newEventDto.getDescription() == null) {
+            log.warn("Event didn't save!");
+            throw new ValidationException("Event didn't save!");
+        }
+
+        if (newEventDto.getAnnotation() == null) {
+            log.warn("Event didn't save!");
+            throw new ValidationException("Event didn't save!");
+        }
+
+        if (newEventDto.getEventDate().isBefore(DateUtils.now())) {
+            log.warn("Event didn't save!");
+            throw new ConflictException("Event didn't save!");
+        }
 
         Event event = new Event();
 
@@ -52,10 +71,10 @@ public class EventService {
         event.setRequestModeration(newEventDto.getRequestModeration());
         event.setParticipantLimit(newEventDto.getParticipantLimit());
         event.setTitle(newEventDto.getTitle());
+        event.setRequestModeration(newEventDto.getRequestModeration());
 
         event.setState(PENDING);
 
-        event.setRequestModeration(true);
         event.setCreatedOn(DateUtils.now());
 
         try {
@@ -152,8 +171,14 @@ public class EventService {
 
             if (gotEvent.getInitiator().equals(user)) {
 
-                if (((gotEvent.getState() == CANCELED) || gotEvent.getRequestModeration())
+                if (gotEvent.getState() == PUBLISHED) {
+                    log.warn("Event " + eventId + " didn't update!");
+                    throw new ConflictException("Event " + eventId + " didn't update!");
+                }
+
+                if (((gotEvent.getState() == CANCELED) || (gotEvent.getState() == PENDING))
                         && (gotEvent.getEventDate().isAfter(DateUtils.now().plusHours(2)))) {
+
                     if (updateEvent.getTitle() != null) {
                         gotEvent.setTitle(updateEvent.getTitle());
                     }
@@ -180,6 +205,12 @@ public class EventService {
                     }
 
                     if (updateEvent.getEventDate() != null) {
+
+                        if (updateEvent.getEventDate().isBefore(gotEvent.getEventDate())) {
+                            log.warn("Event " + eventId + " didn't update!");
+                            throw new ConflictException("Event " + eventId + " didn't update!");
+                        }
+
                         gotEvent.setEventDate(updateEvent.getEventDate());
                     }
 
@@ -199,10 +230,12 @@ public class EventService {
                     try {
                         return EventMapper.toEventFullDto(eventRepository.save(gotEvent));
                     } catch (RuntimeException e) {
-                        throw new ConflictException("Event didn't update!");
+                        log.warn("Event didn't update " + eventId);
+                        throw new ConflictException("Event didn't update " + eventId);
                     }
                 } else {
-                    throw new ConflictException("Event didn't update!");
+                    log.warn("Event didn't update " + eventId);
+                    throw new ConflictException("Event didn't update " + eventId);
                 }
             } else {
                 log.warn("Not found event " + eventId);
@@ -244,6 +277,15 @@ public class EventService {
                 }
             }
 
+            if (updateEvent.getEventDate() != null) {
+
+                if (updateEvent.getEventDate().isBefore(gotEvent.getEventDate())) {
+                    log.warn("Event " + eventId + " didn't update!");
+                    throw new ConflictException("Event " + eventId + " didn't update!");
+                }
+
+                gotEvent.setEventDate(updateEvent.getEventDate());
+            }
 
             if (updateEvent.getTitle() != null) {
                 gotEvent.setTitle(updateEvent.getTitle());
@@ -312,7 +354,7 @@ public class EventService {
         }
     }
 
-    public List<EventFullDto> getEvents(List<Long> users, List<String> states, List<Long> categories,
+    public List<EventFullDto> getEvents(List<Long> users, List<State> states, List<Long> categories,
                                         LocalDateTime rangeStart, LocalDateTime rangeEnd,
                                         Range range) {
 
@@ -323,6 +365,7 @@ public class EventService {
                 eventRepository.findByInitiatorIdInAndStateInAndCategoryIdInAndEventDateIsAfterAndEventDateIsBefore(
                         users, states, categories,
                         rangeStart, rangeEnd, page);
+
         return EventMapper.toListEventFullDto(eventsPage.getContent());
     }
 

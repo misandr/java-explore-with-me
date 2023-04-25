@@ -10,10 +10,13 @@ import ru.practicum.explore.dto.CategoryDto;
 import ru.practicum.explore.dto.NewCategoryDto;
 import ru.practicum.explore.exceptions.ConflictException;
 import ru.practicum.explore.exceptions.NotFoundException;
+import ru.practicum.explore.exceptions.ValidationException;
 import ru.practicum.explore.mapper.CategoryMapper;
 import ru.practicum.explore.model.Category;
+import ru.practicum.explore.model.Event;
 import ru.practicum.explore.model.Range;
 import ru.practicum.explore.repository.CategoryRepository;
+import ru.practicum.explore.repository.EventRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +26,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final EventRepository eventRepository;
 
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
+        if (newCategoryDto.getName() == null) {
+            log.warn("Category didn't save!");
+            throw new ValidationException("Category didn't save!");
+        }
+
         try {
             Category category = categoryRepository.save(CategoryMapper.toCategory(newCategoryDto));
 
@@ -69,10 +78,12 @@ public class CategoryService {
 
                     return CategoryMapper.toCategoryDto(category);
                 } catch (RuntimeException e) {
-                    throw new ConflictException("Category didn't save!");
+                    log.warn("Category didn't change " + catId);
+                    throw new ConflictException("Category didn't change " + catId);
                 }
             } else {
-                throw new ConflictException("Category didn't save!");
+                log.warn("Category didn't change " + catId);
+                throw new ValidationException("Category didn't change " + catId);
             }
         } else {
             log.warn("Not found category " + catId);
@@ -82,7 +93,15 @@ public class CategoryService {
 
     public void deleteCategory(Long catId) {
         if (categoryRepository.existsById(catId)) {
-            categoryRepository.deleteById(catId);
+
+            List<Event> events = eventRepository.findByCategoryId(catId);
+
+            if (events.size() == 0) {
+                categoryRepository.deleteById(catId);
+            } else {
+                log.warn("Category didn't delete!");
+                throw new ConflictException("Category didn't delete!");
+            }
         } else {
             log.warn("Not found category " + catId);
             throw new NotFoundException("Not found category " + catId);

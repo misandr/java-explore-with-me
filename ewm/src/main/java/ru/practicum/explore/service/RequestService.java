@@ -39,8 +39,7 @@ public class RequestService {
             throw new ConflictException("Can't add request");
         }
 
-        List<ParticipationRequest> requests = requestRepository.findByEvent(event);
-
+        List<ParticipationRequest> requests = requestRepository.findByEventAndStatusIs(event, RequestStatus.CONFIRMED);
         if (requests.size() == event.getParticipantLimit()) {
             log.warn("Can't add request");
             throw new ConflictException("Can't add request");
@@ -58,13 +57,13 @@ public class RequestService {
             participationRequest.setStatus(RequestStatus.CONFIRMED);
         }
 
-        ParticipationRequest savedParticipationRequest = requestRepository.save(participationRequest);
-        if (!savedParticipationRequest.equals(participationRequest)) {
+        try {
+            ParticipationRequest savedParticipationRequest = requestRepository.save(participationRequest);
+            return RequestMapper.toParticipationRequestDto(savedParticipationRequest);
+        } catch (RuntimeException e) {
             log.warn("Can't add request " + participationRequest.getId());
             throw new ConflictException("Can't add request " + participationRequest.getId());
         }
-
-        return RequestMapper.toParticipationRequestDto(savedParticipationRequest);
     }
 
     public List<ParticipationRequestDto> getRequests(Long userId, Long eventId) {
@@ -97,8 +96,8 @@ public class RequestService {
                 if (event.getInitiator().equals(user)) {
 
                     if (request.getStatus() == RequestStatus.PENDING) {
-                        List<ParticipationRequest> requestsForEvent = requestRepository.findByEvent(event);
 
+                        List<ParticipationRequest> requestsForEvent = requestRepository.findByEventAndStatusIs(event, RequestStatus.CONFIRMED);
                         if (requestsForEvent.size() == event.getParticipantLimit()) {
                             log.warn("Can't change request " + request.getId());
                             throw new ConflictException("Can't change request " + request.getId());
@@ -108,7 +107,21 @@ public class RequestService {
                         if (!event.getRequestModeration() || (event.getParticipantLimit() == 0)) {
                             requestStatus = RequestStatus.CONFIRMED;
                         } else {
-                            requestStatus = eventRequestStatusUpdateRequest.getStatus();
+                            switch (eventRequestStatusUpdateRequest.getStatus()) {
+                                case "CONFIRMED":
+                                    requestStatus = RequestStatus.CONFIRMED;
+                                    break;
+                                case "REJECTED":
+                                    requestStatus = RequestStatus.REJECTED;
+                                    break;
+                                case "PENDING":
+                                    requestStatus = RequestStatus.PENDING;
+                                    break;
+                                default:
+                                    log.warn("Can't change request " + request.getId());
+                                    throw new ConflictException("Can't change request " + request.getId());
+                            }
+
                         }
 
                         request.setStatus(requestStatus);
@@ -117,7 +130,7 @@ public class RequestService {
 
                         if (requestStatus == RequestStatus.CONFIRMED) {
                             confirmedRequests.add(RequestMapper.toParticipationRequestDto(request));
-                        } else if (requestStatus == RequestStatus.CANCELED) {
+                        } else if (requestStatus == RequestStatus.REJECTED) {
                             rejectedRequests.add(RequestMapper.toParticipationRequestDto(request));
                         }
                     } else {
@@ -137,7 +150,7 @@ public class RequestService {
         return RequestMapper.toListParticipationRequestDto(requests);
     }
 
-    public void canselRequest(Long userId, Long requestId) {
+    public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
         User user = userService.getUser(userId);
 
         if (requestRepository.existsById(requestId)) {
@@ -145,8 +158,11 @@ public class RequestService {
 
             if (participationRequest.getRequester().equals(user)) {
                 participationRequest.setStatus(RequestStatus.CANCELED);
-
-                requestRepository.save(participationRequest);
+                ParticipationRequestDto r = RequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
+                return r;
+            } else {
+                log.warn("Not found request " + requestId);
+                throw new NotFoundException("Not found request " + requestId);
             }
         } else {
             log.warn("Not found request " + requestId);

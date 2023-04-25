@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explore.Constants;
 import ru.practicum.explore.dto.*;
+import ru.practicum.explore.enums.State;
 import ru.practicum.explore.model.Range;
 import ru.practicum.explore.service.CategoryService;
 import ru.practicum.explore.service.CompilationService;
@@ -14,7 +15,10 @@ import ru.practicum.explore.service.EventService;
 import ru.practicum.explore.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static ru.practicum.explore.enums.State.PUBLISHED;
 
 @Slf4j
 @RestController
@@ -81,15 +85,16 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/events")
-    public List<EventFullDto> getEvents(@RequestParam List<Long> users,
-                                        @RequestParam List<String> states,
-                                        @RequestParam List<Long> categories,
-                                        @RequestParam @DateTimeFormat(pattern = Constants.DATE_FORMAT) LocalDateTime rangeStart,
-                                        @RequestParam @DateTimeFormat(pattern = Constants.DATE_FORMAT) LocalDateTime rangeEnd,
+    public List<EventFullDto> getEvents(@RequestParam(defaultValue = "") List<Long> users,
+                                        @RequestParam(defaultValue = "") List<State> states,
+                                        @RequestParam(defaultValue = "") List<Long> categories,
+                                        @RequestParam(required = false) @DateTimeFormat(pattern = Constants.DATE_FORMAT) LocalDateTime rangeStart,
+                                        @RequestParam(required = false) @DateTimeFormat(pattern = Constants.DATE_FORMAT) LocalDateTime rangeEnd,
                                         @RequestParam(defaultValue = "0") Integer from,
                                         @RequestParam(defaultValue = "10") Integer size) {
         log.info("Get events of users {} with states {} and categories {} (rangeStart: {}, rangeEnd: {}, from: {}, size: {})",
                 users, states, categories, rangeStart, rangeEnd, from, size);
+
         return eventService.getEvents(users, states, categories, rangeStart, rangeEnd, Range.of(from, size));
     }
 

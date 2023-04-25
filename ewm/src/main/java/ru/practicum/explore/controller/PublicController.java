@@ -43,7 +43,7 @@ public class PublicController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/compilations")
-    public List<CompilationDto> getCompilations(@RequestParam Boolean pinned,
+    public List<CompilationDto> getCompilations(@RequestParam(defaultValue = "false") Boolean pinned,
                                                 @RequestParam(defaultValue = "0") Integer from,
                                                 @RequestParam(defaultValue = "10") Integer size) {
         log.info("Get compilations (pinned: {} from: {}, size: {})", pinned, from, size);
@@ -80,7 +80,7 @@ public class PublicController {
                                            HttpServletRequest request) {
         log.info("Search events with text {}, categories {} , paid {} , onlyAvailable {} , sort {} (rangeStart: {}, rangeEnd: {}, from: {}, size: {})",
                 text, categories, paid, onlyAvailable, sort, rangeStart, rangeEnd, from, size);
-        return eventService.searchEvents(("%" + text + "%").toLowerCase(), categories, paid, onlyAvailable, sort, rangeStart, rangeEnd,
+        return eventService.searchEvents(text, categories, paid, onlyAvailable, sort, rangeStart, rangeEnd,
                 Range.of(from, size), request.getRemoteAddr(), request.getRequestURI());
     }
 }

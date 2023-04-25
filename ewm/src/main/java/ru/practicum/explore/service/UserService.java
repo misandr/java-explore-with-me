@@ -10,6 +10,7 @@ import ru.practicum.explore.dto.NewUserRequest;
 import ru.practicum.explore.dto.UserDto;
 import ru.practicum.explore.exceptions.ConflictException;
 import ru.practicum.explore.exceptions.UserNotFoundException;
+import ru.practicum.explore.exceptions.ValidationException;
 import ru.practicum.explore.mapper.UserMapper;
 import ru.practicum.explore.model.Range;
 import ru.practicum.explore.model.User;
@@ -26,6 +27,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDto addUser(NewUserRequest newUserRequest) {
+        if (newUserRequest.getName() == null) {
+            log.warn("User didn't save!");
+            throw new ValidationException("User didn't save!");
+        }
+
         try {
             User user = userRepository.save(UserMapper.toUser(newUserRequest));
 

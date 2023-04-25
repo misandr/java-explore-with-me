@@ -21,7 +21,6 @@ public class PrivateController {
     private final RequestService requestService;
     private final EventService eventService;
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{userId}/events")
     public EventFullDto addEvent(@PathVariable Long userId, @RequestBody NewEventDto newEventDto) {
@@ -72,17 +71,17 @@ public class PrivateController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userId}/events/{eventId}/requests")
-    public ParticipationRequestDto addRequest(@PathVariable Long userId, @PathVariable Long eventId) {
+    @PostMapping("/{userId}/requests")
+    public ParticipationRequestDto addRequest(@PathVariable Long userId, @RequestParam Long eventId) {
         log.info("Add request for event {} from user {}", eventId, userId);
         return requestService.addRequest(userId, eventId);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{userId}/requests/{requestId}/cansel")
-    public void canselRequest(@PathVariable Long userId, @PathVariable Long requestId) {
-        log.info("Cansel request {} from user {}", requestId, userId);
-        requestService.canselRequest(userId, userId);
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{userId}/requests/{requestId}/cancel")
+    public ParticipationRequestDto cancelRequest(@PathVariable Long userId, @PathVariable Long requestId) {
+        log.info("Cancel request {} from user {}", requestId, userId);
+        return requestService.cancelRequest(userId, requestId);
     }
 }
 

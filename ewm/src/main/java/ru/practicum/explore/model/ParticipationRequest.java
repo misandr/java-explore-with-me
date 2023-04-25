@@ -1,8 +1,10 @@
 package ru.practicum.explore.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.explore.Constants;
 import ru.practicum.explore.enums.RequestStatus;
 
 import javax.persistence.*;
@@ -27,6 +29,7 @@ public class ParticipationRequest {
     private User requester;
 
     @Column(nullable = false, name = "created_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime created;
 
     @Enumerated(EnumType.STRING)

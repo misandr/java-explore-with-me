@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explore.dto.*;
 import ru.practicum.explore.exceptions.ConflictException;
 import ru.practicum.explore.exceptions.NotFoundException;
+import ru.practicum.explore.exceptions.ValidationException;
 import ru.practicum.explore.mapper.EventMapper;
 import ru.practicum.explore.model.*;
 import ru.practicum.explore.repository.CompilationEventsRepository;
@@ -30,8 +31,13 @@ public class CompilationService {
 
     @Transactional
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
-        try {
 
+        if (newCompilationDto.getTitle() == null) {
+            log.warn("Compilation didn't save!");
+            throw new ValidationException("Compilation didn't save!");
+        }
+
+        try {
             Compilation compilation = new Compilation();
 
             compilation.setTitle(newCompilationDto.getTitle());
@@ -70,8 +76,13 @@ public class CompilationService {
                 compilationEventsRepository.deleteById(compilationEvent.getId());
             }
 
-            compilation.get().setTitle(updateCompilationRequest.getTitle());
-            compilation.get().setPinned(updateCompilationRequest.getPinned());
+            if (updateCompilationRequest.getTitle() != null) {
+                compilation.get().setTitle(updateCompilationRequest.getTitle());
+            }
+
+            if (updateCompilationRequest.getPinned() != null) {
+                compilation.get().setPinned(updateCompilationRequest.getPinned());
+            }
 
             Compilation savedCompilation = compilationRepository.save(compilation.get());
 
