@@ -15,10 +15,8 @@ import ru.practicum.explore.service.EventService;
 import ru.practicum.explore.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import static ru.practicum.explore.enums.State.PUBLISHED;
 
 @Slf4j
 @RestController

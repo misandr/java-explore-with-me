@@ -12,7 +12,9 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     Event findByIdAndInitiator(Long eventId, User initiator);
+
     List<Event> findByCategoryId(Long catId);
+
     Page<Event> findByInitiator(User initiator, Pageable pageable);
 
     Page<Event> findByInitiatorIdInAndStateInAndCategoryIdInAndEventDateIsAfterAndEventDateIsBefore(List<Long> userIds, List<State> states, List<Long> categoriesIds, LocalDateTime start, LocalDateTime end, Pageable pageable);

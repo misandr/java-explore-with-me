@@ -1,2 +1,4 @@
 # java-explore-with-me
-Template repository for ExploreWithMe project.
+
+# Main DB
+![DB diagram](/ewm/src/main/resources/main_db.png)
