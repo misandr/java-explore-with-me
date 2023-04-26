@@ -62,4 +62,3 @@ services:
       - POSTGRES_DB=explore
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-#    command: -p 5433
