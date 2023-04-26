@@ -31,7 +31,7 @@ public class CategoryService {
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
         if (newCategoryDto.getName() == null) {
             log.warn("Category didn't save!");
-            throw new ValidationException("Category didn't save!");
+            throw new ConflictException("Category didn't save!");
         }
 
         try {

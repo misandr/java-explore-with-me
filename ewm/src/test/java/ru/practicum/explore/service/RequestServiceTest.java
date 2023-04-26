@@ -56,7 +56,7 @@ class RequestServiceTest {
         assertThat(requests.get(0).getStatus(), equalTo(RequestStatus.PENDING));
 
         EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest =
-                new EventRequestStatusUpdateRequest(List.of(1L), RequestStatus.CONFIRMED);
+                new EventRequestStatusUpdateRequest(List.of(1L), "CONFIRMED");
 
         requestService.changeStatusRequest(user1.getId(), eventFilm1.getId(), eventRequestStatusUpdateRequest);
 
