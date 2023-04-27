@@ -11,5 +11,4 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
     List<Hit> findByTimestampIsAfterAndTimestampIsBefore(LocalDateTime startTime, LocalDateTime endTime);
 
     List<Hit> findByTimestampIsAfterAndTimestampIsBeforeAndUriIn(LocalDateTime startTime, LocalDateTime endTime, List<String> uris);
-
 }
