@@ -8,13 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.explore.DateUtils;
 import ru.practicum.explore.dto.*;
-import ru.practicum.explore.enums.RequestStatus;
 import ru.practicum.explore.enums.State;
 import ru.practicum.explore.exceptions.ConflictException;
 import ru.practicum.explore.exceptions.NotFoundException;
 import ru.practicum.explore.exceptions.ValidationException;
+import ru.practicum.explore.mapper.CommentMapper;
 import ru.practicum.explore.mapper.EventMapper;
 import ru.practicum.explore.model.*;
+import ru.practicum.explore.repository.CommentRepository;
 import ru.practicum.explore.repository.EventRepository;
 import ru.practicum.explore.repository.RequestRepository;
 import ru.practicum.explore.stats.HitDto;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static ru.practicum.explore.Constants.APP_NAME;
+import static ru.practicum.explore.enums.RequestStatus.CONFIRMED;
 import static ru.practicum.explore.enums.State.*;
 
 @Slf4j
@@ -36,6 +38,7 @@ public class EventService {
     private final CategoryService categoryService;
     private final StatsClient statsClient;
     private final RequestRepository requestRepository;
+    private final CommentRepository commentRepository;
 
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
         if (newEventDto.getTitle() == null) {
@@ -134,13 +137,17 @@ public class EventService {
 
         long countConfirmed = 0;
         for (ParticipationRequest request : requests) {
-            if (request.getStatus() == RequestStatus.CONFIRMED) {
+            if (request.getStatus() == CONFIRMED) {
                 countConfirmed++;
             }
         }
 
         eventFullDto.setViews(hits);
         eventFullDto.setConfirmedRequests(countConfirmed);
+
+        List<Comment> comments = commentRepository.findByEvent(gotEvent);
+        eventFullDto.setComments(CommentMapper.toCommentsDto(comments));
+
         return eventFullDto;
     }
 
@@ -150,7 +157,12 @@ public class EventService {
     }
 
     public EventFullDto getEventDtoForCurrentUser(Long userId, Long eventId) {
-        return EventMapper.toEventFullDto(getEventForCurrentUser(userId, eventId));
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(getEventForCurrentUser(userId, eventId));
+        Event gotEvent = getEvent(eventId);
+
+        List<Comment> comments = commentRepository.findByEvent(gotEvent);
+        eventFullDto.setComments(CommentMapper.toCommentsDto(comments));
+        return eventFullDto;
     }
 
     public List<EventShortDto> getEventsForCurrentUser(Long userId, Range range) {
@@ -160,7 +172,19 @@ public class EventService {
         Pageable page = PageRequest.of(newFrom, range.getSize());
 
         Page<Event> eventsPage = eventRepository.findByInitiator(user, page);
-        return EventMapper.toListEventShortDto(eventsPage.getContent());
+
+        List<EventShortDto> events = new ArrayList<>();
+
+        for (Event event : eventsPage.getContent()) {
+            EventShortDto eventShortDto = EventMapper.toEventShortDto(event);
+
+            List<Comment> comments = commentRepository.findByEvent(event);
+
+            eventShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
+            events.add(eventShortDto);
+        }
+        return events;
     }
 
     public EventFullDto changeEventByUser(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
@@ -255,16 +279,11 @@ public class EventService {
 
             if (gotEvent.getState() == PUBLISHED) {
                 if (gotEvent.getEventDate().isBefore(gotEvent.getPublishedOn().plusHours(1))) {
-                    log.warn("Event " + eventId + " didn't update!");
-                    throw new ConflictException("Event " + eventId + " didn't update!");
+                    log.warn("Event " + eventId + " didn't update (wrong date)!");
+                    throw new ConflictException("Event " + eventId + " didn't update (wrong date)!");
                 }
 
                 if (updateEvent.getStateAction().equals("REJECT_EVENT")) {
-                    log.warn("Event " + eventId + " didn't update!");
-                    throw new ConflictException("Event " + eventId + " didn't update!");
-                }
-
-                if ((gotEvent.getEventDate().plusHours(1).isBefore(gotEvent.getPublishedOn()))) {
                     log.warn("Event " + eventId + " didn't update!");
                     throw new ConflictException("Event " + eventId + " didn't update!");
                 }
@@ -272,8 +291,8 @@ public class EventService {
 
             if (gotEvent.getState() != PENDING) {
                 if (updateEvent.getStateAction().equals("PUBLISH_EVENT")) {
-                    log.warn("Event " + eventId + " didn't update!");
-                    throw new ConflictException("Event " + eventId + " didn't update!");
+                    log.warn("Event " + eventId + " didn't update (wrong state)!");
+                    throw new ConflictException("Event " + eventId + " didn't update (wrong state)!");
                 }
             }
 
@@ -366,7 +385,19 @@ public class EventService {
                         users, states, categories,
                         rangeStart, rangeEnd, page);
 
-        return EventMapper.toListEventFullDto(eventsPage.getContent());
+        List<EventFullDto> events = new ArrayList<>();
+
+        for (Event event : eventsPage.getContent()) {
+            EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
+
+            List<Comment> comments = commentRepository.findByEvent(event);
+
+            eventFullDto.setComments(CommentMapper.toCommentsDto(comments));
+
+            events.add(eventFullDto);
+        }
+
+        return events;
     }
 
     public Set<EventShortDto> searchEvents(String text, List<Long> categories, Boolean paid, Boolean onlyAvailable,
@@ -466,11 +497,13 @@ public class EventService {
                 }
             }
 
-            List<ParticipationRequest> requests = requestRepository.findByEvent(getEvent(eventShortDto.getId()));
+            Event gotEvent = getEvent(eventShortDto.getId());
+
+            List<ParticipationRequest> requests = requestRepository.findByEvent(gotEvent);
 
             long countConfirmed = 0;
             for (ParticipationRequest request : requests) {
-                if (request.getStatus() == RequestStatus.CONFIRMED) {
+                if (request.getStatus() == CONFIRMED) {
                     countConfirmed++;
                 }
             }
@@ -478,9 +511,80 @@ public class EventService {
             eventShortDto.setViews(hits);
             eventShortDto.setConfirmedRequests(countConfirmed);
 
+            List<Comment> comments = commentRepository.findByEvent(gotEvent);
+            eventShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
             sortedEvents.add(eventShortDto);
         }
 
         return sortedEvents;
+    }
+
+    public CommentDto addComment(Long userId, Long eventId, NewCommentDto newCommentDto) {
+        User user = userService.getUser(userId);
+        Event event = getEvent(eventId);
+        List<ParticipationRequest> requests = requestRepository.findByEventAndRequesterAndStatusIs(event, user, CONFIRMED);
+
+        if (requests.size() > 0) {
+            if (newCommentDto.getText().isBlank()) {
+                log.warn("Can't add comment. Text of comment is empty!");
+                throw new ConflictException("Can't add comment. Text of comment is empty!");
+            }
+
+            if (event.getEventDate().isAfter(DateUtils.now())) {
+                log.warn("Can't add comment. Event not yet!");
+                throw new ConflictException("Can't add comment. Event not yet!");
+            }
+
+            Comment comment = new Comment();
+
+            comment.setText(newCommentDto.getText());
+            comment.setCreated(DateUtils.now());
+            comment.setEvent(event);
+            comment.setAuthor(user);
+
+            Comment savedComment = commentRepository.save(comment);
+            if (!savedComment.equals(comment)) {
+                log.warn("Can't add comment " + comment.getId());
+                throw new ConflictException("Can't add comment " + comment.getId());
+            }
+
+            return CommentMapper.toCommentDto(savedComment);
+        } else {
+            log.warn(String.format("No confirmed requests for user %d, event %d!", user.getId(), event.getId()));
+            throw new ConflictException(String.format("No confirmed requests for user %d, event %d!", user.getId(), event.getId()));
+        }
+    }
+
+    public CommentDto changeComment(Long userId, Long commentId, NewCommentDto newCommentDto) {
+        User user = userService.getUser(userId);
+
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if (comment.isPresent()) {
+            Comment gotComment = comment.get();
+
+            if (!gotComment.getAuthor().equals(user)) {
+                log.warn("Can't change comment " + commentId + " (other author)");
+                throw new ConflictException("Can't change comment " + commentId + " (other author)");
+            }
+
+            if (newCommentDto.getText().isBlank()) {
+                log.warn("Text of comment is empty!");
+                throw new ValidationException("Text of comment is empty!");
+            }
+
+            gotComment.setText(newCommentDto.getText());
+
+            Comment savedComment = commentRepository.save(gotComment);
+            if (!savedComment.equals(gotComment)) {
+                log.warn("Can't add comment " + gotComment.getId());
+                throw new ConflictException("Can't add comment " + gotComment.getId());
+            }
+
+            return CommentMapper.toCommentDto(savedComment);
+        } else {
+            log.warn("Not found comment " + commentId);
+            throw new NotFoundException("Not found comment " + commentId);
+        }
     }
 }

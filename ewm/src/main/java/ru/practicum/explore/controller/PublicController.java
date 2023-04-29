@@ -83,5 +83,14 @@ public class PublicController {
         return eventService.searchEvents(text, categories, paid, onlyAvailable, sort, rangeStart, rangeEnd,
                 Range.of(from, size), request.getRemoteAddr(), request.getRequestURI());
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/events/{eventId}/comment")
+    public CommentDto addComment(@PathVariable Long eventId,
+                                 @RequestParam Long userId,
+                                 @RequestBody NewCommentDto newCommentDto) {
+        log.info("Add comment {} for event {} from user {}", newCommentDto, eventId, userId);
+        return eventService.addComment(userId, eventId, newCommentDto);
+    }
 }
 

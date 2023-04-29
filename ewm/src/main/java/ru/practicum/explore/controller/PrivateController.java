@@ -83,5 +83,14 @@ public class PrivateController {
         log.info("Cancel request {} from user {}", requestId, userId);
         return requestService.cancelRequest(userId, requestId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{userId}/comments/{commentId}")
+    public CommentDto changeComment(@PathVariable Long userId,
+                                    @PathVariable Long commentId,
+                                    @RequestBody NewCommentDto newCommentDto) {
+        log.info("Change comment {} to {} from user {}", commentId, newCommentDto, userId);
+        return eventService.changeComment(userId, commentId, newCommentDto);
+    }
 }
 

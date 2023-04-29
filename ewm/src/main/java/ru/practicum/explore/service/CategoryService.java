@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.explore.dto.CategoryDto;
 import ru.practicum.explore.dto.NewCategoryDto;
 import ru.practicum.explore.exceptions.ConflictException;
+import ru.practicum.explore.exceptions.ConflictValueException;
 import ru.practicum.explore.exceptions.NotFoundException;
 import ru.practicum.explore.exceptions.ValidationException;
 import ru.practicum.explore.mapper.CategoryMapper;
@@ -31,7 +32,7 @@ public class CategoryService {
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
         if (newCategoryDto.getName() == null) {
             log.warn("Category didn't save!");
-            throw new ValidationException("Category didn't save!");
+            throw new ConflictValueException("Category didn't save!");
         }
 
         try {

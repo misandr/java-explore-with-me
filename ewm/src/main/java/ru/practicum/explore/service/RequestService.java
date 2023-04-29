@@ -30,19 +30,19 @@ public class RequestService {
         Event event = eventService.getEvent(eventId);
 
         if (event.getInitiator().equals(user)) {
-            log.warn("Can't add request");
-            throw new ConflictException("Can't add request");
+            log.warn("Can't add request (initiator = user)");
+            throw new ConflictException("Can't add request (initiator = user)");
         }
 
         if (event.getState() != State.PUBLISHED) {
-            log.warn("Can't add request");
-            throw new ConflictException("Can't add request");
+            log.warn("Can't add request (not published)");
+            throw new ConflictException("Can't add request (not published)");
         }
 
         List<ParticipationRequest> requests = requestRepository.findByEventAndStatusIs(event, RequestStatus.CONFIRMED);
         if (requests.size() == event.getParticipantLimit()) {
-            log.warn("Can't add request");
-            throw new ConflictException("Can't add request");
+            log.warn("Can't add request (limit)");
+            throw new ConflictException("Can't add request (limit)");
         }
 
         ParticipationRequest participationRequest = new ParticipationRequest();
@@ -157,9 +157,10 @@ public class RequestService {
             ParticipationRequest participationRequest = requestRepository.getReferenceById(requestId);
 
             if (participationRequest.getRequester().equals(user)) {
+
                 participationRequest.setStatus(RequestStatus.CANCELED);
-                ParticipationRequestDto r = RequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
-                return r;
+
+                return RequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
             } else {
                 log.warn("Not found request " + requestId);
                 throw new NotFoundException("Not found request " + requestId);
