@@ -7,349 +7,472 @@
 	},
 	"item": [
 		{
-			"name": "Добавление новой категории",
+			"name": "User X1 create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+							"});",
+							"",
+							"const source = JSON.parse(pm.request.body.raw);",
+							"",
+							"const target = pm.response.json();",
+							"",
+							"pm.collectionVariables.set('uid1', target.id);",
+							"pm.collectionVariables.set('un1', target.name);",
+							"",
+							"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {",
+							"pm.expect(target).to.have.property('id');",
+							"pm.expect(target).to.have.property('name');",
+							"pm.expect(target).to.have.property('email');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
+							"    pm.expect(target.id).to.not.be.null;",
+							"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');",
+							"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let user;\r",
+							"    try {\r",
+							"        user = rnd.getUser();\r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(user),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User X2 create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+							"});",
+							"",
+							"const source = JSON.parse(pm.request.body.raw);",
+							"",
+							"const target = pm.response.json();",
+							"",
+							"pm.collectionVariables.set('uid2', target.id);",
+							"pm.collectionVariables.set('un2', target.name);",
+							"",
+							"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {",
+							"pm.expect(target).to.have.property('id');",
+							"pm.expect(target).to.have.property('name');",
+							"pm.expect(target).to.have.property('email');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
+							"    pm.expect(target.id).to.not.be.null;",
+							"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');",
+							"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let user;\r",
+							"    try {\r",
+							"        user = rnd.getUser();\r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(user),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User X3 create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+							"});",
+							"",
+							"const source = JSON.parse(pm.request.body.raw);",
+							"",
+							"const target = pm.response.json();",
+							"",
+							"pm.collectionVariables.set('uid3', target.id);",
+							"pm.collectionVariables.set('un3', target.name);",
+							"",
+							"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {",
+							"pm.expect(target).to.have.property('id');",
+							"pm.expect(target).to.have.property('name');",
+							"pm.expect(target).to.have.property('email');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
+							"    pm.expect(target.id).to.not.be.null;",
+							"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');",
+							"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let user;\r",
+							"    try {\r",
+							"        user = rnd.getUser();\r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(user),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User X4 create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+							"});",
+							"",
+							"const source = JSON.parse(pm.request.body.raw);",
+							"",
+							"const target = pm.response.json();",
+							"",
+							"pm.collectionVariables.set('uid4', target.id);",
+							"pm.collectionVariables.set('un4', target.name);",
+							"",
+							"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {",
+							"pm.expect(target).to.have.property('id');",
+							"pm.expect(target).to.have.property('name');",
+							"pm.expect(target).to.have.property('email');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {",
+							"    pm.expect(target.id).to.not.be.null;",
+							"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');",
+							"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let user;\r",
+							"    try {\r",
+							"        user = rnd.getUser();\r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(user),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create event X1 user X1",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"    pm.response.to.be.withBody;\r",
-							"    pm.response.to.be.json;\r",
-							"});\r",
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
 							"\r",
-							"const source = JSON.parse(pm.request.body.raw);\r",
-							"const target = pm.response.json();\r",
+							"    let event;\r",
+							"    try {\r",
+							"        var moment = require('moment');\r",
+							"        var eventDate = moment().add(1, 's');\r",
 							"\r",
-							"pm.test(\"Категория должна содержать поля: id, name\", function () {\r",
-							"pm.expect(target).to.have.property('id');\r",
-							"pm.expect(target).to.have.property('name');\r",
-							"});\r",
+							"        const category = await api.addCategory(rnd.getCategory());\r",
 							"\r",
-							"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-							"    pm.expect(target.id).to.not.be.null;\r",
-							"    pm.expect(source.name).equal(target.name, 'Название категории должно совпадать с отправленным');\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Концерты\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/categories",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"categories"
-					]
-				},
-				"description": "Обратите внимание: имя категории должно быть уникальным"
-			},
-			"response": []
-		},
-		{
-			"name": "User 1 create",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 or 201\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});",
-							"pm.test(\"Has user create response\", function () {",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"});",
-							"pm.test(\"Test user 'id' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('id');",
-							"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);",
-							"});",
-							"pm.test(\"Test user 'email' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email, '\"email\" must be \"user1@user.com\"').to.eql('user1@user.com');",
-							"});",
-							"pm.test(\"Test user 'name' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('name');",
-							"    pm.expect(jsonData.name, '\"name\" must be \"user1\"').to.eql('user1');",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"user1\",\n    \"email\": \"user1@user.com\"\n}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User 2 create",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 or 201\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});",
-							"pm.test(\"Has user create response\", function () {",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"});",
-							"pm.test(\"Test user 'id' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('id');",
-							"    pm.expect(jsonData.id, '\"id\" must be 2').to.eql(2);",
-							"});",
-							"pm.test(\"Test user 'email' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email, '\"email\" must be \"user2@user.com\"').to.eql('user2@user.com');",
-							"});",
-							"pm.test(\"Test user 'name' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('name');",
-							"    pm.expect(jsonData.name, '\"name\" must be \"user2\"').to.eql('user2');",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "*/*",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"user2\",\n    \"email\": \"user2@user.com\"\n}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User 3 create",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 or 201\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});",
-							"pm.test(\"Has user create response\", function () {",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"});",
-							"pm.test(\"Test user 'id' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('id');",
-							"    pm.expect(jsonData.id, '\"id\" must be 3').to.eql(3);",
-							"});",
-							"pm.test(\"Test user 'email' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email, '\"email\" must be \"user3@user.com\"').to.eql('user3@user.com');",
-							"});",
-							"pm.test(\"Test user 'name' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('name');",
-							"    pm.expect(jsonData.name, '\"name\" must be \"user3\"').to.eql('user3');",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "*/*",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"user3\",\n    \"email\": \"user3@user.com\"\n}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User 4 create",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200 or 201\", function () {",
-							"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});",
-							"pm.test(\"Has user create response\", function () {",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"});",
-							"pm.test(\"Test user 'id' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('id');",
-							"    pm.expect(jsonData.id, '\"id\" must be 4').to.eql(4);",
-							"});",
-							"pm.test(\"Test user 'email' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email, '\"email\" must be \"user4@user.com\"').to.eql('user4@user.com');",
-							"});",
-							"pm.test(\"Test user 'name' field\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.property('name');",
-							"    pm.expect(jsonData.name, '\"name\" must be \"user4\"').to.eql('user4');",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "*/*",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"user4\",\n    \"email\": \"user4@user.com\"\n}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create event 1 user 1",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"var moment = require('moment');\r",
-							"var eventDate = moment().add(1, 's');\r",
-							"pm.environment.set('eventDate', eventDate.format('YYYY-MM-DD HH:mm:ss'));"
+							"        event = rnd.getEventWithDate(category.id, eventDate.format('YYYY-MM-DD HH:mm:ss'));\r",
+							"        event.requestModeration = true;\r",
+							"        console.info(event);\r",
+							"        \r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(event),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
 						],
 						"type": "text/javascript"
 					}
@@ -366,6 +489,7 @@
 							"\r",
 							"const source = JSON.parse(pm.request.body.raw);\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('eid1', target.id);\r",
 							"\r",
 							"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
 							"pm.expect(target).to.have.property('id');\r",
@@ -414,7 +538,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"annotation\": \"Концерт                1\",\r\n  \"category\": 1,\r\n  \"description\": \"Очень             интересный\",\r\n  \"eventDate\": \"{{eventDate}}\",\r\n  \"location\": { \"lat\": 55.75, \"lon\": 37.62 },\r\n  \"paid\": true,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Концерт 1\"\r\n}\r\n  ",
+					"raw": "{{request_body}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -434,7 +558,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "1"
+							"value": "{{uid1}}"
 						}
 					]
 				},
@@ -443,15 +567,51 @@
 			"response": []
 		},
 		{
-			"name": "Create event 2 user 1",
+			"name": "Create event X2 user X1",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var moment = require('moment');\r",
-							"var eventDate = moment().add(1, 's');\r",
-							"pm.environment.set('eventDate', eventDate.format('YYYY-MM-DD HH:mm:ss'));"
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let event;\r",
+							"    try {\r",
+							"        var moment = require('moment');\r",
+							"        var eventDate = moment().add(1, 's');\r",
+							"\r",
+							"        const category = await api.addCategory(rnd.getCategory());\r",
+							"\r",
+							"        event = rnd.getEventWithDate(category.id, eventDate.format('YYYY-MM-DD HH:mm:ss'));\r",
+							"        event.requestModeration = true;\r",
+							"        \r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(event),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
 						],
 						"type": "text/javascript"
 					}
@@ -468,6 +628,7 @@
 							"\r",
 							"const source = JSON.parse(pm.request.body.raw);\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('eid2', target.id);\r",
 							"\r",
 							"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
 							"pm.expect(target).to.have.property('id');\r",
@@ -516,7 +677,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"annotation\": \"Концерт                2\",\r\n  \"category\": 1,\r\n  \"description\": \"Очень             интересный\",\r\n  \"eventDate\": \"{{eventDate}}\",\r\n  \"location\": { \"lat\": 55.75, \"lon\": 37.62 },\r\n  \"paid\": true,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Концерт 2\"\r\n}",
+					"raw": "{{request_body}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -536,8 +697,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "1",
-							"description": "(Required) id текущего пользователя"
+							"value": "{{uid1}}"
 						}
 					]
 				},
@@ -546,15 +706,51 @@
 			"response": []
 		},
 		{
-			"name": "Create event 3 user 2",
+			"name": "Create event X3 user X2",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var moment = require('moment');\r",
-							"var eventDate = moment().add(1, 's');\r",
-							"pm.environment.set('eventDate', eventDate.format('YYYY-MM-DD HH:mm:ss'));"
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let event;\r",
+							"    try {\r",
+							"        var moment = require('moment');\r",
+							"        var eventDate = moment().add(1, 's');\r",
+							"\r",
+							"        const category = await api.addCategory(rnd.getCategory());\r",
+							"\r",
+							"        event = rnd.getEventWithDate(category.id, eventDate.format('YYYY-MM-DD HH:mm:ss'));\r",
+							"        event.requestModeration = true;\r",
+							"        \r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(event),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
 						],
 						"type": "text/javascript"
 					}
@@ -571,6 +767,7 @@
 							"\r",
 							"const source = JSON.parse(pm.request.body.raw);\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('eid3', target.id);\r",
 							"\r",
 							"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
 							"pm.expect(target).to.have.property('id');\r",
@@ -619,7 +816,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"annotation\": \"Концерт                3\",\r\n  \"category\": 1,\r\n  \"description\": \"Очень             интересный\",\r\n  \"eventDate\": \"{{eventDate}}\",\r\n  \"location\": { \"lat\": 55.75, \"lon\": 37.62 },\r\n  \"paid\": true,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Концерт 3\"\r\n}",
+					"raw": "{{request_body}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -639,8 +836,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "2",
-							"description": "(Required) id текущего пользователя"
+							"value": "{{uid2}}"
 						}
 					]
 				},
@@ -649,7 +845,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment  from user 3 to event 2 wthout request",
+			"name": "Comment  from user X3 to event X2 wthout request",
 			"event": [
 				{
 					"listen": "test",
@@ -693,7 +889,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -705,13 +901,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -719,7 +915,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment  from user 3 to unknown event",
+			"name": "Comment  from user X3 to unknown event",
 			"event": [
 				{
 					"listen": "test",
@@ -763,7 +959,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 1000\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -775,13 +971,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -789,7 +985,7 @@
 			"response": []
 		},
 		{
-			"name": "Publish event 1",
+			"name": "Publish event X1",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -849,7 +1045,7 @@
 					"variable": [
 						{
 							"key": "eventId",
-							"value": "1",
+							"value": "{{eid1}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -859,7 +1055,7 @@
 			"response": []
 		},
 		{
-			"name": "Publish event 2",
+			"name": "Publish event X2",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -919,7 +1115,7 @@
 					"variable": [
 						{
 							"key": "eventId",
-							"value": "2",
+							"value": "{{eid2}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -929,7 +1125,7 @@
 			"response": []
 		},
 		{
-			"name": "Publish event 3",
+			"name": "Publish event X3",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -989,7 +1185,7 @@
 					"variable": [
 						{
 							"key": "eventId",
-							"value": "3",
+							"value": "{{eid3}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -999,7 +1195,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 1 event 1 user 3",
+			"name": "Add request X1 event X1 user X3",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1021,6 +1217,8 @@
 							"});\r",
 							"\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('rid1', target.id);\r",
+							"\r",
 							"var query = {};\r",
 							"pm.request.url.query.all().forEach((param) => { query[param.key] = param.value});\r",
 							"\r",
@@ -1053,7 +1251,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=1",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid1}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1065,14 +1263,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "1",
+							"value": "{{eid1}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "3",
+							"value": "{{uid3}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -1082,7 +1280,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 2 event 2 user 3",
+			"name": "Add request X2 event X2 user X3",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1104,6 +1302,8 @@
 							"});\r",
 							"\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('rid2', target.id);\r",
+							"\r",
 							"var query = {};\r",
 							"pm.request.url.query.all().forEach((param) => { query[param.key] = param.value});\r",
 							"\r",
@@ -1136,7 +1336,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=2",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1148,14 +1348,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "2",
+							"value": "{{eid2}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "3",
+							"value": "{{uid3}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -1165,7 +1365,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 3 event 2 user 4",
+			"name": "Add request X3 event X2 user X4",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1187,6 +1387,8 @@
 							"});\r",
 							"\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('rid3', target.id);\r",
+							"\r",
 							"var query = {};\r",
 							"pm.request.url.query.all().forEach((param) => { query[param.key] = param.value});\r",
 							"\r",
@@ -1219,7 +1421,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=2",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1231,14 +1433,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "2",
+							"value": "{{eid2}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "4",
+							"value": "{{uid4}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -1248,7 +1450,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 4 event 3 user 3",
+			"name": "Add request X4 event X3 user X3",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1270,6 +1472,8 @@
 							"});\r",
 							"\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('rid4', target.id);\r",
+							"\r",
 							"var query = {};\r",
 							"pm.request.url.query.all().forEach((param) => { query[param.key] = param.value});\r",
 							"\r",
@@ -1302,7 +1506,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=3",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1314,14 +1518,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "3",
+							"value": "{{eid3}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "3",
+							"value": "{{uid3}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -1331,7 +1535,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 5 event 3 user 4",
+			"name": "Add request X5 event X3 user X4",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1353,6 +1557,8 @@
 							"});\r",
 							"\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('rid5', target.id);\r",
+							"\r",
 							"var query = {};\r",
 							"pm.request.url.query.all().forEach((param) => { query[param.key] = param.value});\r",
 							"\r",
@@ -1385,7 +1591,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=3",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1397,14 +1603,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "3",
+							"value": "{{eid3}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "4",
+							"value": "{{uid4}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -1414,7 +1620,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment  from user 3 to event 2 unconfirmed",
+			"name": "Comment  from user X3 to event X2 unconfirmed",
 			"event": [
 				{
 					"listen": "test",
@@ -1458,7 +1664,7 @@
 					"raw": "{\n    \"text\": \"\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1470,13 +1676,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -1484,7 +1690,7 @@
 			"response": []
 		},
 		{
-			"name": "Confirm request 2,3 event 2 user 1",
+			"name": "Confirm request X2,X3 event X2 user X1",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1524,7 +1730,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"requestIds\": [\r\n    2,\r\n    3\r\n  ],\r\n  \"status\": \"CONFIRMED\"\r\n}",
+					"raw": "{\r\n  \"requestIds\": [\r\n    {{rid2}},\r\n    {{rid3}}\r\n  ],\r\n  \"status\": \"CONFIRMED\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1546,12 +1752,12 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "1",
+							"value": "{{uid1}}",
 							"description": "(Required) id текущего пользователя"
 						},
 						{
 							"key": "eventId",
-							"value": "2",
+							"value": "{{eid2}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -1561,7 +1767,7 @@
 			"response": []
 		},
 		{
-			"name": "Confirm request 4,5 event 3 user 2",
+			"name": "Confirm request X4,X5 event X3 user X2",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -1601,7 +1807,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"requestIds\": [\r\n    4,\r\n    5\r\n  ],\r\n  \"status\": \"CONFIRMED\"\r\n}",
+					"raw": "{\r\n  \"requestIds\": [\r\n    {{rid4}},\r\n    {{rid5}}\r\n  ],\r\n  \"status\": \"CONFIRMED\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1623,12 +1829,12 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "2",
+							"value": "{{uid2}}",
 							"description": "(Required) id текущего пользователя"
 						},
 						{
 							"key": "eventId",
-							"value": "3",
+							"value": "{{eid3}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -1638,7 +1844,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment  from user 3 to event 2 empty",
+			"name": "Comment  from user X3 to event X2 empty",
 			"event": [
 				{
 					"listen": "test",
@@ -1682,7 +1888,7 @@
 					"raw": "{\n    \"text\": \"\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1694,13 +1900,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -1708,7 +1914,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment 1  from user 3 to Event 2",
+			"name": "Comment 1  from user X3 to Event X2",
 			"event": [
 				{
 					"listen": "test",
@@ -1721,7 +1927,7 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.id, '\"id\" field').to.eql(1);",
 							"    pm.expect(jsonData.text, '\"text\" field').to.eql(\"Add comment from user3 event 2\");",
-							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(\"user3\");",
+							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(pm.collectionVariables.get('un3'));",
 							"    pm.expect(jsonData.created, '\"created\" field').not.null;",
 							"});"
 						],
@@ -1732,10 +1938,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var moment = require('moment');\r",
-							"\r",
-							"var start = moment();\r",
-							"pm.environment.set('currentDateTime', start.format('YYYY-MM-DDTHH:mm:ss'));"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1760,7 +1963,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1772,13 +1975,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -1786,7 +1989,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment 2  from user 4 to Event 2",
+			"name": "Comment 2  from user X4 to Event X2",
 			"event": [
 				{
 					"listen": "test",
@@ -1799,7 +2002,7 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.id, '\"id\" field').to.eql(2);",
 							"    pm.expect(jsonData.text, '\"text\" field').to.eql(\"Add comment from user4 event 2\");",
-							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(\"user4\");",
+							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(pm.collectionVariables.get('un4'));",
 							"    pm.expect(jsonData.created, '\"created\" field').not.null;",
 							"});"
 						],
@@ -1810,10 +2013,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var moment = require('moment');\r",
-							"\r",
-							"var start = moment();\r",
-							"pm.environment.set('currentDateTime', start.format('YYYY-MM-DDTHH:mm:ss'));"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1838,7 +2038,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user4 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=4",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid4}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -1850,13 +2050,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "4"
+							"value": "{{uid4}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -1864,7 +2064,7 @@
 			"response": []
 		},
 		{
-			"name": "Event 2 get with comments",
+			"name": "Event X2 get with comments",
 			"event": [
 				{
 					"listen": "test",
@@ -1895,11 +2095,11 @@
 							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
 							"    pm.expect(1).equal(comment1.id, 'Идентификатор комментария должен соответствовать добавленному');",
 							"    pm.expect(\"Add comment from user3 event 2\").equal(comment1.text, 'Текст комментария должен соответствовать добавленному');",
-							"    pm.expect(\"user3\").equal(comment1.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un3')).equal(comment1.authorName, 'Автор комментария должен соответствовать добавленному');",
 							"",
 							"        pm.expect(2).equal(comment2.id, 'Идентификатор комментария должен соответствовать добавленному');",
 							"    pm.expect(\"Add comment from user4 event 2\").equal(comment2.text, 'Текст комментария должен соответствовать добавленному');",
-							"    pm.expect(\"user4\").equal(comment2.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un4')).equal(comment2.authorName, 'Автор комментария должен соответствовать добавленному');",
 							"});",
 							"",
 							"",
@@ -1935,7 +2135,7 @@
 					"variable": [
 						{
 							"key": "eventId",
-							"value": "2"
+							"value": "{{eid2}}"
 						}
 					]
 				}
@@ -1943,7 +2143,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment 3  from user 3 to Event 3",
+			"name": "Comment X3  from user X3 to Event X3",
 			"event": [
 				{
 					"listen": "test",
@@ -1956,7 +2156,7 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.id, '\"id\" field').to.eql(3);",
 							"    pm.expect(jsonData.text, '\"text\" field').to.eql(\"Add comment from user3 event 3\");",
-							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(\"user3\");",
+							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(pm.collectionVariables.get('un3'));",
 							"    pm.expect(jsonData.created, '\"created\" field').not.null;",
 							"});"
 						],
@@ -1992,7 +2192,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 3\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=3",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -2004,13 +2204,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "3"
+							"value": "{{eid3}}"
 						}
 					]
 				}
@@ -2060,15 +2260,16 @@
 							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
 							"    pm.expect(1).equal(comment1.id, 'Идентификатор комментария должен соответствовать добавленному');",
 							"    pm.expect(\"Add comment from user3 event 2\").equal(comment1.text, 'Текст комментария должен соответствовать добавленному');",
-							"    pm.expect(\"user3\").equal(comment1.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un3')).equal(comment1.authorName, 'Автор комментария должен соответствовать добавленному');",
 							"",
 							"    pm.expect(2).equal(comment2.id, 'Идентификатор комментария должен соответствовать добавленному');",
 							"    pm.expect(\"Add comment from user4 event 2\").equal(comment2.text, 'Текст комментария должен соответствовать добавленному');",
-							"    pm.expect(\"user4\").equal(comment2.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un4')).equal(comment2.authorName, 'Автор комментария должен соответствовать добавленному');",
 							"",
 							"    pm.expect(3).equal(comment3.id, 'Идентификатор комментария должен соответствовать добавленному');",
 							"    pm.expect(\"Add comment from user3 event 3\").equal(comment3.text, 'Текст комментария должен соответствовать добавленному');",
-							"    pm.expect(\"user3\").equal(comment3.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"    console.info(pm.collectionVariables.get('un3'));",
+							"    pm.expect(pm.collectionVariables.get('un3')).equal(comment3.authorName, 'Автор комментария должен соответствовать добавленному');",
 							"});",
 							"",
 							"",
@@ -2097,27 +2298,72 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/events",
+					"raw": "{{baseUrl}}/events?from=0&size=60",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"events"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "60"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create future event 4 user 1",
+			"name": "Create future event X4 user X1",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var moment = require('moment');\r",
-							"var eventDate = moment().add(10, 'd');\r",
-							"pm.environment.set('eventDate', eventDate.format('YYYY-MM-DD HH:mm:ss'));"
+							"const main = async () => {\r",
+							"    const api = new API(pm);\r",
+							"    const rnd = new RandomUtils();\r",
+							"\r",
+							"    let event;\r",
+							"    try {\r",
+							"        var moment = require('moment');\r",
+							"        var eventDate = moment().add(10, 'd');\r",
+							"\r",
+							"        const category = await api.addCategory(rnd.getCategory());\r",
+							"        event = rnd.getEventWithDate(category.id, eventDate.format('YYYY-MM-DD HH:mm:ss'));\r",
+							"        event.requestModeration = true;\r",
+							"        \r",
+							"    } catch(err) {\r",
+							"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+							"    }\r",
+							"\r",
+							"    pm.request.body.update({\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify(event),\r",
+							"        options: { raw: { language: 'json' } }\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"const interval = setInterval(() => {}, 1000);\r",
+							"\r",
+							"setTimeout(async () => \r",
+							"    {\r",
+							"        try {\r",
+							"            await main();\r",
+							"        } catch (e) {\r",
+							"            console.error(e);\r",
+							"        } finally {\r",
+							"            clearInterval(interval);\r",
+							"        }\r",
+							"    },  \r",
+							"    100 \r",
+							");"
 						],
 						"type": "text/javascript"
 					}
@@ -2134,6 +2380,7 @@
 							"\r",
 							"const source = JSON.parse(pm.request.body.raw);\r",
 							"const target = pm.response.json();\r",
+							"pm.collectionVariables.set('eid4', target.id);\r",
 							"\r",
 							"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
 							"pm.expect(target).to.have.property('id');\r",
@@ -2182,7 +2429,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"annotation\": \"Концерт                4\",\r\n  \"category\": 1,\r\n  \"description\": \"Очень                интересный\",\r\n  \"eventDate\": \"{{eventDate}}\",\r\n  \"location\": {\r\n    \"lat\": 55.75,\r\n    \"lon\": 37.62\r\n  },\r\n  \"paid\": true,\r\n  \"participantLimit\": 10,\r\n  \"requestModeration\": false,\r\n  \"title\": \"Концерт 4\"\r\n}",
+					"raw": "{{request_body}}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2202,7 +2449,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "1",
+							"value": "{{uid1}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -2212,7 +2459,7 @@
 			"response": []
 		},
 		{
-			"name": "Publish event 4",
+			"name": "Publish event X4",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -2272,7 +2519,7 @@
 					"variable": [
 						{
 							"key": "eventId",
-							"value": "4",
+							"value": "{{eid4}}",
 							"description": "(Required) id события текущего пользователя"
 						}
 					]
@@ -2282,7 +2529,7 @@
 			"response": []
 		},
 		{
-			"name": "Add request 6 event 4 user 4",
+			"name": "Add request X6 event X4 user X4",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -2317,7 +2564,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/requests?eventId=4",
+					"raw": "{{baseUrl}}/users/:userId/requests?eventId={{eid4}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -2329,14 +2576,14 @@
 					"query": [
 						{
 							"key": "eventId",
-							"value": "4",
+							"value": "{{eid4}}",
 							"description": "(Required) id события"
 						}
 					],
 					"variable": [
 						{
 							"key": "userId",
-							"value": "4",
+							"value": "{{uid4}}",
 							"description": "(Required) id текущего пользователя"
 						}
 					]
@@ -2346,7 +2593,7 @@
 			"response": []
 		},
 		{
-			"name": "Comment  from user 4 to event 4 in future",
+			"name": "Comment  from user X4 to event X4 in future",
 			"event": [
 				{
 					"listen": "test",
@@ -2390,7 +2637,7 @@
 					"raw": "{\n    \"text\": \"Add comment from user4 event 4\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId=4",
+					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid4}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -2402,13 +2649,13 @@
 					"query": [
 						{
 							"key": "userId",
-							"value": "4"
+							"value": "{{uid4}}"
 						}
 					],
 					"variable": [
 						{
 							"key": "iventId",
-							"value": "4"
+							"value": "{{eid4}}"
 						}
 					]
 				}
@@ -2416,7 +2663,7 @@
 			"response": []
 		},
 		{
-			"name": "Change comment 3  from user 3 to Event 3",
+			"name": "Change comment 3  from user X3 to Event X3",
 			"event": [
 				{
 					"listen": "test",
@@ -2429,7 +2676,7 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.id, '\"id\" field').to.eql(3);",
 							"    pm.expect(jsonData.text, '\"text\" field').to.eql(\"Changed comment from user3 event 3\");",
-							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(\"user3\");",
+							"    pm.expect(jsonData.authorName, '\"authorName\" field').to.eql(pm.collectionVariables.get('un3'));",
 							"    pm.expect(jsonData.created, '\"created\" field').not.null;",
 							"});"
 						],
@@ -2478,7 +2725,7 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "3"
+							"value": "{{uid3}}"
 						},
 						{
 							"key": "commentId",
@@ -2490,7 +2737,7 @@
 			"response": []
 		},
 		{
-			"name": "Change comment 3  from other user 4 to event 3",
+			"name": "Change comment 3  from other user X4 to event X3",
 			"event": [
 				{
 					"listen": "test",
@@ -2565,7 +2812,172 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"API = class {",
+					"    constructor(postman, verbose = false, baseUrl = \"http://localhost:8080\") {",
+					"        this.baseUrl = baseUrl;",
+					"        this.pm = postman;",
+					"        this._verbose = verbose;",
+					"    }",
+					"",
+					"    async addUser(user, verbose=null) {",
+					"        return this.post(\"/admin/users\", user, \"Ошибка при добавлении нового пользователя: \", verbose);",
+					"    }",
+					"",
+					"    async addCategory(category, verbose=null) {",
+					"        return this.post(\"/admin/categories\", category, \"Ошибка при добавлении новой категории: \", verbose);",
+					"    }",
+					"",
+					"    async addEvent(userId, event, verbose=null) {",
+					"        return this.post(\"/users/\" + userId + \"/events\", event, \"Ошибка при добавлении нового события: \", verbose);",
+					"    }",
+					"",
+					"    async addCompilation(compilation, verbose=null) {",
+					"        return this.post(\"/admin/compilations\", compilation, \"Ошибка при добавлении новой подборки: \", verbose);",
+					"    }",
+					"",
+					"    async publishParticipationRequest(eventId, userId, verbose=null) {",
+					"        return this.post('/users/' + userId + '/requests?eventId=' + eventId, null, \"Ошибка при добавлении нового запроса на участие в событии\", verbose);",
+					"    }",
+					"",
+					"    async publishEvent(eventId, verbose=null) {",
+					"        return this.patch('/admin/events/' + eventId, {stateAction: \"PUBLISH_EVENT\"}, \"Ошибка при публикации события\", verbose);",
+					"    }",
+					"    ",
+					"    async rejectEvent(eventId, verbose=null) {",
+					"        return this.patch('/admin/events/' + eventId, {stateAction: \"REJECT_EVENT\"}, \"Ошибка при отмене события\", verbose);",
+					"    }",
+					"",
+					"    async acceptParticipationRequest(eventId, userId, reqId, verbose=null) {",
+					"        return this.patch('/users/' + userId + '/events/' + eventId + '/requests/', {requestIds:[reqId], status: \"CONFIRMED\"}, \"Ошибка при принятии заявки на участие в событии\", verbose);",
+					"    }",
+					"",
+					"    async findCategory(catId, verbose=null) {",
+					"        return this.get('/categories/' + catId, null, \"Ошибка при поиске категории по id\", verbose);",
+					"    }",
+					"",
+					"    async findCompilation(compId, verbose=null) {",
+					"        return this.get('/compilations/' + compId, null, \"Ошибка при поиске подборки по id\", verbose);",
+					"    }",
+					"",
+					"    async findUser(userId, verbose=null) {",
+					"        return this.get('/admin/users?ids=' + userId, null, \"Ошибка при поиске пользователя по id\", verbose);",
+					"    }",
+					"",
+					"    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"POST\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"PATCH\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"GET\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
+					"        return new Promise((resolve, reject) => {",
+					"            verbose = verbose == null ? this._verbose : verbose;",
+					"",
+					"            const request = {",
+					"                url: this.baseUrl + path,",
+					"                method: method,",
+					"                body: body == null ? \"\" : JSON.stringify(body),",
+					"                header: { \"Content-Type\": \"application/json\" },",
+					"            };",
+					"",
+					"            if(verbose) {",
+					"                console.log(\"Отправляю запрос: \", request);",
+					"            }",
+					"",
+					"            try {",
+					"                this.pm.sendRequest(request, (error, response) => {",
+					"                    if(error || (response.code >= 400 && response.code <= 599)) {",
+					"                        let err = error ? error : JSON.stringify(response.json());",
+					"                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,",
+					"                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + ",
+					"                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));",
+					"",
+					"                        reject(new Error(errorText + err));",
+					"                    }",
+					"",
+					"                    if(verbose) {",
+					"                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());",
+					"                    }",
+					"",
+					"                    resolve(response.json());",
+					"                });",
+					"            } catch(err) {",
+					"                if(verbose) {",
+					"                    console.error(errorText, err);",
+					"                }",
+					"                return Promise.reject(err);",
+					"            }",
+					"        });",
+					"    }",
+					"};",
+					"",
+					"RandomUtils = class {",
+					"    constructor() {}",
+					"",
+					"    getUser() {",
+					"        return {",
+					"            name: pm.variables.replaceIn('{{$randomFullName}}'),",
+					"            email: pm.variables.replaceIn('{{$randomEmail}}')",
+					"        };",
+					"    }",
+					"",
+					"    getCategory() {",
+					"        return {",
+					"            name: pm.variables.replaceIn('{{$randomWord}}') + Math.floor(Math.random() * 100).toString()",
+					"        };",
+					"    }",
+					"",
+					"    getEvent(categoryId) {",
+					"        return {",
+					"            annotation: pm.variables.replaceIn('{{$randomLoremParagraph}}'),",
+					"            category: categoryId,",
+					"            description: pm.variables.replaceIn('{{$randomLoremParagraphs}}'),",
+					"            eventDate: this.getFutureDateTime(),",
+					"            location: {",
+					"                lat: parseFloat(pm.variables.replaceIn('{{$randomLatitude}}')),",
+					"                lon: parseFloat(pm.variables.replaceIn('{{$randomLongitude}}')),",
+					"            },",
+					"            paid: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            participantLimit: pm.variables.replaceIn('{{$randomInt}}'),",
+					"            requestModeration: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            title: pm.variables.replaceIn('{{$randomLoremSentence}}'),",
+					"        }",
+					"    }",
+					"",
+					"    getEventWithDate(categoryId, date) {",
+					"        return {",
+					"            annotation: pm.variables.replaceIn('{{$randomLoremParagraph}}'),",
+					"            category: categoryId,",
+					"            description: pm.variables.replaceIn('{{$randomLoremParagraphs}}'),",
+					"            eventDate: date,",
+					"            location: {",
+					"                lat: parseFloat(pm.variables.replaceIn('{{$randomLatitude}}')),",
+					"                lon: parseFloat(pm.variables.replaceIn('{{$randomLongitude}}')),",
+					"            },",
+					"            paid: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            participantLimit: pm.variables.replaceIn('{{$randomInt}}'),",
+					"            requestModeration: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            title: pm.variables.replaceIn('{{$randomLoremSentence}}'),",
+					"        }",
+					"    }",
+					"",
+					"    getFutureDateTime(hourShift = 5, minuteShift=0, yearShift=0) {",
+					"        let moment = require('moment');",
+					"",
+					"        let m = moment();",
+					"        m.add(hourShift, 'hour');",
+					"        m.add(minuteShift, 'minute');",
+					"        m.add(yearShift, 'year');",
+					"",
+					"        return m.format('YYYY-MM-DD HH:mm:ss');",
+					"    }",
+					"}"
 				]
 			}
 		},
@@ -2583,6 +2995,96 @@
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "uid1",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "uid2",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "uid3",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "uid4",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "eid1",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "eid2",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "eid3",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "eid4",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid1",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid2",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid3",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid4",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid5",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rid6",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "un1",
+			"value": "\"x\"",
+			"type": "string"
+		},
+		{
+			"key": "un2",
+			"value": "\"x\"",
+			"type": "string"
+		},
+		{
+			"key": "un3",
+			"value": "\"x\"",
+			"type": "string"
+		},
+		{
+			"key": "un4",
+			"value": "\"x\"",
 			"type": "string"
 		}
 	]

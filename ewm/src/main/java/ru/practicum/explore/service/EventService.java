@@ -412,7 +412,6 @@ public class EventService {
         Pageable page = PageRequest.of(newFrom, range.getSize());
 
         Page<Event> eventsPage;
-
         if ((rangeStart == null) || (rangeEnd == null)) {
             if (onlyAvailable) {
                 eventsPage =
