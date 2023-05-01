@@ -3,6 +3,7 @@ package ru.practicum.explore.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explore.DateUtils;
 import ru.practicum.explore.dto.ParticipationRequestDto;
 import ru.practicum.explore.enums.RequestStatus;
@@ -150,6 +151,7 @@ public class RequestService {
         return RequestMapper.toListParticipationRequestDto(requests);
     }
 
+    @Transactional
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
         User user = userService.getUser(userId);
 
@@ -159,6 +161,10 @@ public class RequestService {
             if (participationRequest.getRequester().equals(user)) {
 
                 participationRequest.setStatus(RequestStatus.CANCELED);
+
+                for (Comment comment : eventService.getCommentsByEvent(participationRequest.getEvent())) {
+                    eventService.deleteComment(comment.getId());
+                }
 
                 return RequestMapper.toParticipationRequestDto(requestRepository.save(participationRequest));
             } else {

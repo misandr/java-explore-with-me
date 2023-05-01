@@ -29,6 +29,10 @@ public class Comment {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime created;
 
+    @Column(name = "edited_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
+    private LocalDateTime edited;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

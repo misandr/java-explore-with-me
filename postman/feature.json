@@ -882,6 +882,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -889,24 +894,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -952,6 +949,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -959,24 +961,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 1000\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -1657,6 +1651,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1664,24 +1663,16 @@
 					"raw": "{\n    \"text\": \"\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -1881,6 +1872,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1888,24 +1884,16 @@
 					"raw": "{\n    \"text\": \"\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -1956,6 +1944,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1963,24 +1956,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -2031,6 +2016,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid4}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2038,24 +2028,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user4 event 2\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid4}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid2}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid4}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid2}}"
 						}
 					]
@@ -2084,12 +2066,14 @@
 							"pm.expect(comment1).to.have.property('event');",
 							"pm.expect(comment1).to.have.property('authorName');",
 							"pm.expect(comment1).to.have.property('created');",
+							"pm.expect(comment1).to.have.property('edited');",
 							"",
 							"pm.expect(comment2).to.have.property('id');",
 							"pm.expect(comment2).to.have.property('text');",
 							"pm.expect(comment2).to.have.property('event');",
 							"pm.expect(comment2).to.have.property('authorName');",
 							"pm.expect(comment2).to.have.property('created');",
+							"pm.expect(comment2).to.have.property('edited');",
 							"});",
 							"",
 							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
@@ -2143,6 +2127,197 @@
 			"response": []
 		},
 		{
+			"name": "Get comment 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							"const comment = pm.response.json();",
+							"",
+							"pm.test(\"Ответ должен содержать поля: id, text, event, authorName, created, edited\", function () {",
+							"pm.expect(comment).to.have.property('id');",
+							"pm.expect(comment).to.have.property('text');",
+							"pm.expect(comment).to.have.property('event');",
+							"pm.expect(comment).to.have.property('authorName');",
+							"pm.expect(comment).to.have.property('created');",
+							"pm.expect(comment).to.have.property('edited');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
+							"    pm.expect(1).equal(comment.id, 'Идентификатор комментария должен соответствовать добавленному');",
+							"    pm.expect(\"Add comment from user3 event 2\").equal(comment.text, 'Текст комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un3')).equal(comment.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/comments/:commentId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"comments",
+						":commentId"
+					],
+					"variable": [
+						{
+							"key": "commentId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get comments user X4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							"const comment = pm.response.json()[0];",
+							"",
+							"pm.test(\"Ответ должен содержать поля: id, text, event, authorName, created, edited\", function () {",
+							"pm.expect(comment).to.have.property('id');",
+							"pm.expect(comment).to.have.property('text');",
+							"pm.expect(comment).to.have.property('event');",
+							"pm.expect(comment).to.have.property('authorName');",
+							"pm.expect(comment).to.have.property('created');",
+							"pm.expect(comment).to.have.property('edited');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
+							"    pm.expect(2).equal(comment.id, 'Идентификатор комментария должен соответствовать добавленному');",
+							"    pm.expect(\"Add comment from user4 event 2\").equal(comment.text, 'Текст комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un4')).equal(comment.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/comments?users={{uid4}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "users",
+							"value": "{{uid4}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.be.ok;",
+							"});",
+							"",
+							"",
+							"const comment1 = pm.response.json()[0];",
+							"const comment2 = pm.response.json()[1];",
+							"",
+							"pm.test(\"Ответ должен содержать поля: id, text, event, authorName, created, edited\", function () {",
+							"pm.expect(comment1).to.have.property('id');",
+							"pm.expect(comment1).to.have.property('text');",
+							"pm.expect(comment1).to.have.property('event');",
+							"pm.expect(comment1).to.have.property('authorName');",
+							"pm.expect(comment1).to.have.property('created');",
+							"pm.expect(comment2).to.have.property('edited');",
+							"",
+							"pm.expect(comment2).to.have.property('id');",
+							"pm.expect(comment2).to.have.property('text');",
+							"pm.expect(comment2).to.have.property('event');",
+							"pm.expect(comment2).to.have.property('authorName');",
+							"pm.expect(comment2).to.have.property('created');",
+							"pm.expect(comment2).to.have.property('edited');",
+							"});",
+							"",
+							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
+							"    pm.expect(1).equal(comment1.id, 'Идентификатор комментария должен соответствовать добавленному');",
+							"    pm.expect(\"Add comment from user3 event 2\").equal(comment1.text, 'Текст комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un3')).equal(comment1.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"",
+							"        pm.expect(2).equal(comment2.id, 'Идентификатор комментария должен соответствовать добавленному');",
+							"    pm.expect(\"Add comment from user4 event 2\").equal(comment2.text, 'Текст комментария должен соответствовать добавленному');",
+							"    pm.expect(pm.collectionVariables.get('un4')).equal(comment2.authorName, 'Автор комментария должен соответствовать добавленному');",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/comments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Comment X3  from user X3 to Event X3",
 			"event": [
 				{
@@ -2185,6 +2360,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2192,24 +2372,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user3 event 3\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid3}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid3}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid3}}"
 						}
 					]
@@ -2237,24 +2409,27 @@
 							"",
 							"console.info(events);",
 							"",
-							"pm.test(\"Запрос на участие должен содержать поля: id, requester, event, status, created\", function () {",
+							"pm.test(\"Ответ должен содержать поля: id, text, event, authorName, created, edited\", function () {",
 							"pm.expect(comment1).to.have.property('id');",
 							"pm.expect(comment1).to.have.property('text');",
 							"pm.expect(comment1).to.have.property('event');",
 							"pm.expect(comment1).to.have.property('authorName');",
 							"pm.expect(comment1).to.have.property('created');",
+							"pm.expect(comment1).to.have.property('edited');",
 							"",
 							"pm.expect(comment2).to.have.property('id');",
 							"pm.expect(comment2).to.have.property('text');",
 							"pm.expect(comment2).to.have.property('event');",
 							"pm.expect(comment2).to.have.property('authorName');",
 							"pm.expect(comment2).to.have.property('created');",
+							"pm.expect(comment2).to.have.property('edited');",
 							"",
 							"pm.expect(comment3).to.have.property('id');",
 							"pm.expect(comment3).to.have.property('text');",
 							"pm.expect(comment3).to.have.property('event');",
 							"pm.expect(comment3).to.have.property('authorName');",
 							"pm.expect(comment3).to.have.property('created');",
+							"pm.expect(comment3).to.have.property('edited');",
 							"});",
 							"",
 							"pm.test(\"Данные в ответе должны соответствовать предыдущим запросам\", function () {",
@@ -2630,6 +2805,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid4}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2637,24 +2817,16 @@
 					"raw": "{\n    \"text\": \"Add comment from user4 event 4\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/events/:iventId/comment?userId={{uid4}}",
+					"raw": "{{baseUrl}}/comments?eventId={{eid4}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"events",
-						":iventId",
-						"comment"
+						"comments"
 					],
 					"query": [
 						{
-							"key": "userId",
-							"value": "{{uid4}}"
-						}
-					],
-					"variable": [
-						{
-							"key": "iventId",
+							"key": "eventId",
 							"value": "{{eid4}}"
 						}
 					]
@@ -2705,6 +2877,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2712,21 +2889,15 @@
 					"raw": "{\n    \"text\": \"Changed comment from user3 event 3\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/comments/:commentId",
+					"raw": "{{baseUrl}}/comments/:commentId",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"users",
-						":userId",
 						"comments",
 						":commentId"
 					],
 					"variable": [
-						{
-							"key": "userId",
-							"value": "{{uid3}}"
-						},
 						{
 							"key": "commentId",
 							"value": "3"
@@ -2774,6 +2945,11 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid4}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2781,21 +2957,81 @@
 					"raw": "{\n    \"text\": \"Changed comment from user4 event 3\"\n}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/users/:userId/comments/:commentId",
+					"raw": "{{baseUrl}}/comments/:commentId",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"users",
-						":userId",
 						"comments",
 						":commentId"
 					],
 					"variable": [
 						{
-							"key": "userId",
-							"value": "4"
-						},
+							"key": "commentId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete comment 3  from user X3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Explore-User-Id",
+						"value": "{{uid3}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"Changed comment from user4 event 3\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/comments/:commentId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"comments",
+						":commentId"
+					],
+					"variable": [
 						{
 							"key": "commentId",
 							"value": "3"
@@ -3085,6 +3321,21 @@
 		{
 			"key": "un4",
 			"value": "\"x\"",
+			"type": "string"
+		},
+		{
+			"key": "cid1",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "cid2",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "cid3",
+			"value": "1",
 			"type": "string"
 		}
 	]

@@ -18,4 +18,6 @@ public class CommentDto {
     private String authorName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
     private LocalDateTime created;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_FORMAT)
+    private LocalDateTime edited;
 }

@@ -539,6 +539,7 @@ public class EventService {
 
             comment.setText(newCommentDto.getText());
             comment.setCreated(DateUtils.now());
+            comment.setEdited(DateUtils.now());
             comment.setEvent(event);
             comment.setAuthor(user);
 
@@ -558,29 +559,88 @@ public class EventService {
     public CommentDto changeComment(Long userId, Long commentId, NewCommentDto newCommentDto) {
         User user = userService.getUser(userId);
 
+        Comment gotComment = getComment(commentId);
+
+        if (!gotComment.getAuthor().equals(user)) {
+            log.warn("Can't change comment " + commentId + " (other author)");
+            throw new ConflictException("Can't change comment " + commentId + " (other author)");
+        }
+
+        if (newCommentDto.getText().isBlank()) {
+            log.warn("Text of comment is empty!");
+            throw new ValidationException("Text of comment is empty!");
+        }
+
+        gotComment.setText(newCommentDto.getText());
+        gotComment.setEdited(DateUtils.now());
+
+        Comment savedComment = commentRepository.save(gotComment);
+        if (!savedComment.equals(gotComment)) {
+            log.warn("Can't add comment " + gotComment.getId());
+            throw new ConflictException("Can't add comment " + gotComment.getId());
+        }
+
+        return CommentMapper.toCommentDto(savedComment);
+    }
+
+    public List<CommentDto> getComments(List<Long> users, List<Long> events,
+                                        Range range) {
+
+        int newFrom = range.getFrom() / range.getSize();
+        Pageable page = PageRequest.of(newFrom, range.getSize());
+
+        Page<Comment> commentsPage;
+
+        if ((users.size() != 0) && (events.size() != 0)) {
+            commentsPage = commentRepository.findByAuthorIdInAndEventIdIn(users, events, page);
+        } else if (users.size() != 0) {
+            commentsPage = commentRepository.findByAuthorIdIn(users, page);
+        } else if (events.size() != 0) {
+            commentsPage = commentRepository.findByEventIdIn(events, page);
+        } else {
+            commentsPage = commentRepository.findAll(page);
+        }
+
+        commentRepository.findByAuthorIdIn(users, page);
+
+        return CommentMapper.toCommentsDto(commentsPage.getContent());
+    }
+
+    public List<Comment> getCommentsByEvent(Event event) {
+        return commentRepository.findByEvent(event);
+    }
+
+    public CommentDto getCommentDto(Long commentId) {
+        return CommentMapper.toCommentDto(getComment(commentId));
+    }
+
+    public Comment getComment(Long commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isPresent()) {
-            Comment gotComment = comment.get();
 
-            if (!gotComment.getAuthor().equals(user)) {
-                log.warn("Can't change comment " + commentId + " (other author)");
-                throw new ConflictException("Can't change comment " + commentId + " (other author)");
-            }
+            return comment.get();
+        } else {
+            log.warn("Not found comment " + commentId);
+            throw new NotFoundException("Not found comment " + commentId);
+        }
+    }
 
-            if (newCommentDto.getText().isBlank()) {
-                log.warn("Text of comment is empty!");
-                throw new ValidationException("Text of comment is empty!");
-            }
+    public void deleteComment(Long userId, Long commentId) {
+        Comment gotComment = getComment(commentId);
 
-            gotComment.setText(newCommentDto.getText());
+        User user = userService.getUser(userId);
 
-            Comment savedComment = commentRepository.save(gotComment);
-            if (!savedComment.equals(gotComment)) {
-                log.warn("Can't add comment " + gotComment.getId());
-                throw new ConflictException("Can't add comment " + gotComment.getId());
-            }
+        if (!gotComment.getAuthor().equals(user)) {
+            log.warn("Can't change comment " + commentId + " (other author)");
+            throw new ConflictException("Can't change comment " + commentId + " (other author)");
+        }
 
-            return CommentMapper.toCommentDto(savedComment);
+        commentRepository.deleteById(commentId);
+    }
+
+    public void deleteComment(Long commentId) {
+        if (commentRepository.existsById(commentId)) {
+            commentRepository.deleteById(commentId);
         } else {
             log.warn("Not found comment " + commentId);
             throw new NotFoundException("Not found comment " + commentId);
