@@ -406,7 +406,6 @@ public class EventService {
 
         statsClient.addHit(new HitDto(APP_NAME, endpoint, ip, DateUtils.now()));
 
-        List<EventShortDto> events = null;
         int newFrom = range.getFrom() / range.getSize();
 
         Pageable page = PageRequest.of(newFrom, range.getSize());
@@ -437,7 +436,7 @@ public class EventService {
                                 DateUtils.now(), paid, page);
             }
         }
-        events = EventMapper.toListEventShortDto(eventsPage.getContent());
+        List<EventShortDto> events = EventMapper.toListEventShortDto(eventsPage.getContent());
 
         List<String> uris = new ArrayList<>();
         for (EventShortDto eventShortDto : events) {
