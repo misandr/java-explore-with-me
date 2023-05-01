@@ -2,15 +2,12 @@ package ru.practicum.explore.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.explore.Constants;
 import ru.practicum.explore.dto.*;
 import ru.practicum.explore.model.Range;
 import ru.practicum.explore.service.EventService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.practicum.explore.Constants.HEADER_USER_ID;
