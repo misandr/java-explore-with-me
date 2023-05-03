@@ -36,6 +36,12 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleIncorrectConflictValueException(final ConflictValueException e) {
+        return new ApiError(e.getMessage(), "The required object was not found.", HttpStatus.BAD_REQUEST, List.of());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleThrowable(final Throwable e) {
         return new ApiError("An unexpected error has occurred.", "The required object was not found.", HttpStatus.BAD_REQUEST, List.of());
 

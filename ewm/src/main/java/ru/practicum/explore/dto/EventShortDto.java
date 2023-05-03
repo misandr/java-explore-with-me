@@ -8,6 +8,7 @@ import ru.practicum.explore.Constants;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -30,4 +31,6 @@ public class EventShortDto {
 
     private Long confirmedRequests;
     private Long views;
+
+    private List<CommentDto> comments;
 }

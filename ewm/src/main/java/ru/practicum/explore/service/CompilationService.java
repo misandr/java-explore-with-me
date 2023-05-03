@@ -12,8 +12,10 @@ import ru.practicum.explore.dto.*;
 import ru.practicum.explore.exceptions.ConflictException;
 import ru.practicum.explore.exceptions.NotFoundException;
 import ru.practicum.explore.exceptions.ValidationException;
+import ru.practicum.explore.mapper.CommentMapper;
 import ru.practicum.explore.mapper.EventMapper;
 import ru.practicum.explore.model.*;
+import ru.practicum.explore.repository.CommentRepository;
 import ru.practicum.explore.repository.CompilationEventsRepository;
 import ru.practicum.explore.repository.CompilationRepository;
 
@@ -28,6 +30,7 @@ public class CompilationService {
     private final EventService eventService;
     private final CompilationRepository compilationRepository;
     private final CompilationEventsRepository compilationEventsRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
@@ -47,11 +50,16 @@ public class CompilationService {
 
             List<EventShortDto> events = new ArrayList<>();
             for (Long eventId : newCompilationDto.getEvents()) {
-                Event event = eventService.getEvent(eventId);
+                Event gotEvent = eventService.getEvent(eventId);
 
-                events.add(EventMapper.toEventShortDto(event));
+                EventShortDto evenShortDto = EventMapper.toEventShortDto(gotEvent);
 
-                compilationEventsRepository.save(new CompilationEvent(0L, savedCompilation, event));
+                List<Comment> comments = commentRepository.findByEvent(gotEvent);
+                evenShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
+                events.add(evenShortDto);
+
+                compilationEventsRepository.save(new CompilationEvent(0L, savedCompilation, gotEvent));
             }
             CompilationDto compilationDto = new CompilationDto();
 
@@ -88,11 +96,16 @@ public class CompilationService {
 
             List<EventShortDto> events = new ArrayList<>();
             for (Long eventId : updateCompilationRequest.getEvents()) {
-                Event event = eventService.getEvent(eventId);
+                Event gotEvent = eventService.getEvent(eventId);
 
-                events.add(EventMapper.toEventShortDto(event));
+                EventShortDto evenShortDto = EventMapper.toEventShortDto(gotEvent);
 
-                compilationEventsRepository.save(new CompilationEvent(0L, savedCompilation, event));
+                List<Comment> comments = commentRepository.findByEvent(gotEvent);
+                evenShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
+                events.add(evenShortDto);
+
+                compilationEventsRepository.save(new CompilationEvent(0L, savedCompilation, gotEvent));
             }
             CompilationDto compilationDto = new CompilationDto();
 
@@ -121,7 +134,12 @@ public class CompilationService {
 
             List<EventShortDto> events = new ArrayList<>();
             for (CompilationEvent compilationEvent : compilationEvents) {
-                events.add(EventMapper.toEventShortDto(compilationEvent.getEvent()));
+                EventShortDto evenShortDto = EventMapper.toEventShortDto(compilationEvent.getEvent());
+
+                List<Comment> comments = commentRepository.findByEvent(compilationEvent.getEvent());
+                evenShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
+                events.add(evenShortDto);
             }
 
             CompilationDto compilationDto = new CompilationDto();
@@ -155,7 +173,12 @@ public class CompilationService {
 
             List<EventShortDto> events = new ArrayList<>();
             for (CompilationEvent compilationEvent : compilationEvents) {
-                events.add(EventMapper.toEventShortDto(compilationEvent.getEvent()));
+                EventShortDto evenShortDto = EventMapper.toEventShortDto(compilationEvent.getEvent());
+
+                List<Comment> comments = commentRepository.findByEvent(compilationEvent.getEvent());
+                evenShortDto.setComments(CommentMapper.toCommentsDto(comments));
+
+                events.add(evenShortDto);
             }
 
             CompilationDto compilationDto = new CompilationDto();

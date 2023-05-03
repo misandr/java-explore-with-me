@@ -9,6 +9,7 @@ import ru.practicum.explore.model.Location;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -43,4 +44,6 @@ public class EventFullDto {
 
     private Long confirmedRequests;
     private Long views;
+
+    private List<CommentDto> comments;
 }
